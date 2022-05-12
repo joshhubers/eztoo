@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# trap ctrl-c and call ctrl_c()
+trap ctrl_c INT
+
+ctrl_c() {
+  echo "Attempting ec2 shutdown"
+  terminate_instance
+}
+
 # Config values
 INSTANCE_TYPE=t2.micro
 KEY_NAME=dev
@@ -52,6 +60,6 @@ start_instance
 echo "Waiting for 'ready' status"
 wait_for_instance
 ssh_setup
-#rsync_dir
+rsync_dir
 ssh_to_instance
 terminate_instance
